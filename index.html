@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Evaluación de Habilidades - U.E. Nueva Era</title>
+    <!-- SheetJS para generar archivos Excel -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Encabezado con gradiente difuminado -->
+        <div class="header-bicolor-difuminado">
+            <div class="logo-colegio">
+                <div class="logo-icono">
+                    <img src="/nuevo/img/image.png" alt="logocolegio" class="logo-icono">
+                </div>
+                <div class="logo-texto">
+                    <span class="logo-nombre">UNIDAD EDUCATIVA NUEVA ERA</span>
+                    <span class="logo-lema">"Formando líderes con excelencia académica"</span>
+                </div>
+            </div>
+            <div class="header-titulo">
+                <span class="logo-nombre">DECE</span>
+                <span class="logo-lema">"Departamento de consejería estudiantil"</span>
+            </div>
+        </div>
+
+        <!-- FORMULARIO DE DATOS DEL ESTUDIANTE -->
+        <div id="formularioDatos" class="formulario-datos">
+            <div class="titulo-seccion">
+                <h2>📋 EVALUACIÓN DE HABILIDADES</h2>
+            </div>
+            <div class="titulo-seccion">
+                <h2>📝 Datos del estudiante</h2>
+                <p>Complete todos los campos para acceder a las preguntas</p>
+            </div>
+            <div class="datos-grid">
+                <div class="campo">
+                    <label>👤 Nombre completo del estudiante *</label>
+                    <input type="text" id="nombreEstudiante" placeholder="Ej: Isabella Ramírez">
+                    <small class="campo-ayuda">Ingrese su nombre y apellido</small>
+                </div>
+                <div class="campo">
+                    <label>👨‍🏫 Nombre del tutor *</label>
+                    <input type="text" id="docente" placeholder="Ej: Lic. Ana Ramírez">
+                    <small class="campo-ayuda">Nombre del tutor/a o docente a cargo</small>
+                </div>
+                <div class="campo">
+                    <label>📚 Curso / Grado *</label>
+                    <input type="text" id="curso" placeholder="Ej: 4to EGB, 7mo Básica, 1ro Bachillerato">
+                    <small class="campo-ayuda">Ejemplos: Inicial, 2do EGB, 5to Básica, 3ro Bachillerato</small>
+                </div>
+
+                <div class="campo">
+                    <label>📅 Fecha de evaluación *</label>
+                    <input type="date" id="fechaEvaluacion">
+                    <small class="campo-ayuda">Fecha actual</small>
+                </div>
+            </div>
+            <div class="boton-datos">
+                <button id="iniciarEvaluacionBtn" class="btn-iniciar">📖 Comenzar evaluación</button>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE PREGUNTAS (INICIALMENTE OCULTA) -->
+        <div id="seccionPreguntas" class="seccion-preguntas" style="display: none;">
+            <div class="info-curso">
+                <div class="info-card">
+                    <span class="info-label">📚 Curso ingresado:</span>
+                    <span class="info-valor" id="cursoMostrado"></span>
+                </div>
+                <div class="info-card">
+                    <span class="info-label">🎓 Nivel asignado:</span>
+                    <span class="info-valor" id="nivelAsignado"></span>
+                </div>
+            </div>
+
+            <div id="formularioPreguntas"></div>
+
+            <div class="botones-accion">
+                <button id="regresarBtn" class="btn-regresar">🔙 Regresar</button>
+                <button id="enviarTodoBtn" class="btn-enviar-preguntas">📊 Enviar evaluación</button>
+            </div>
+        </div>
+
+        <div id="mensajeInfo" class="mensaje"></div>
+        <footer>
+            <div class="footer-content">
+                <p>Unidad Educativa Particular Vinces Nueva Era - Comprometidos con la educación de calidad</p>
+                <p>© 2026 - Todos los derechos reservados</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>
