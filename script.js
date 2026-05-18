@@ -6,49 +6,66 @@ const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwxoWPDGWyULk
 // ============================================
 // DETECCIÓN DE NIVEL SEGÚN EL CURSO
 // ============================================
+// CAMBIO 1: Reemplaza la función detectarNivelPorCurso completa
 function detectarNivelPorCurso(curso) {
     let cursoLower = curso.toLowerCase().trim();
-    cursoLower = cursoLower.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    cursoLower = cursoLower.normalize("NFD")
+                           .replace(/[\u0300-\u036f]/g, "");
 
-    // Niveles ordenados del más específico al más general
-    const nivelesOrdenados = {
-        bachillerato: ["1ro ciencias", "1ro tecnico en contabilidad", "1ro tecnico en informatica",
-                       "2do ciencias", "2do tecnico en contabilidad", "2do tecnico en informatica",
-                       "3ro ciencias", "3ro tecnico en contabilidad", "3ro tecnico en informatica"],
-        superior: ["octavo a", "octavo b", "octavo c", "8vo a", "8vo b", "8vo c",
-                   "noveno a", "noveno b", "noveno c", "noveno d", "9no a", "9no b", "9no c", "9no d",
-                   "decimo a", "decimo b", "decimo c", "decimo d", "10mo a", "10mo b", "10mo c", "10mo d"],
-        media: ["5to a", "6to a", "7mo a", "quinto a", "sexto a", "septimo a"],
-        elemental: ["segundo", "2do a", "2do b", "3ro a", "3ro b", "4to a", "4to b",
-                    "tercero a", "tercero b", "cuarto a", "cuarto b"],
-        preparatoria: ["primero a", "primero b", "primero c", "1ro a", "1ro b", "1ro c"],
-        inicial: ["inicial 1", "inicial 2a", "inicial 2b"]
-    };
-
-    // Recorrer en el orden definido (importante: bachillerato primero)
-    for (const [nivel, palabras] of Object.entries(nivelesOrdenados)) {
-        for (const palabra of palabras) {
-            if (cursoLower.includes(palabra)) {
-                return nivel;
-            }
+    // Bachillerato primero (más específico)
+    const bachilleratoPatterns = [
+        "ciencias", "tecnico en contabilidad",
+        "tecnico en informatica"
+    ];
+    // Si contiene "1ro", "2do" o "3ro" + algo de bachillerato
+    if (/\b[123](ro|do)\b/.test(cursoLower)) {
+        for (const pattern of bachilleratoPatterns) {
+            if (cursoLower.includes(pattern)) return "bachillerato";
         }
     }
 
-    // Si no encontró coincidencia exacta, intentar por números
+    const niveles = {
+        inicial:       ["inicial 1", "inicial 2a", "inicial 2b"],
+        preparatoria:  [
+            "primero a", "primero b", "primero c",
+            // claves más precisas — con letra al final
+            "1ro a", "1ro b", "1ro c",
+            "1ero a", "1ero b", "1ero c"
+        ],
+        elemental: ["segundo", "2do a", "2do b",
+                    "3ro a", "3ro b", "4to a", "4to b"],
+        media:     ["5to a", "6to a", "7mo a",
+                    "quinto a", "sexto a", "septimo a"],
+        superior:  ["octavo", "noveno", "decimo"],
+        bachillerato: [
+            "1ro ciencias", "1ro tecnico en contabilidad",
+            "1ro tecnico en informatica",
+            "2do ciencias", "2do tecnico en contabilidad",
+            "2do tecnico en informatica",
+            "3ro ciencias", "3ro tecnico en contabilidad",
+            "3ro tecnico en informatica"
+        ]
+    };
+
+    for (const [nivel, palabras] of Object.entries(niveles)) {
+        for (const palabra of palabras) {
+            if (cursoLower.includes(palabra)) return nivel;
+        }
+    }
+
+    // Fallback numérico — solo si no hubo match arriba
     const numeros = cursoLower.match(/\d+/);
     if (numeros) {
-        const numero = parseInt(numeros[0]);
-        // Excluir "ciencias" y "tecnico" del número 1
-        if (numero === 1 && !cursoLower.includes("ciencias") && !cursoLower.includes("tecnico")) {
-            return "preparatoria";
-        }
-        if (numero >= 2 && numero <= 4) return "elemental";
-        if (numero >= 5 && numero <= 7) return "media";
-        if (numero >= 8 && numero <= 10) return "superior";
+        const n = parseInt(numeros[0]);
+        if (n === 1) return "preparatoria";
+        if (n >= 2 && n <= 4) return "elemental";
+        if (n >= 5 && n <= 7) return "media";
+        if (n >= 8 && n <= 10) return "superior";
     }
 
     return null;
 }
+
 
 // ============================================
 // BASE DE PREGUNTAS COMPLETA POR NIVEL
