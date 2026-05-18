@@ -8,22 +8,25 @@ const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwxoWPDGWyULk
 // ============================================
 function detectarNivelPorCurso(curso) {
     let cursoLower = curso.toLowerCase().trim();
-
     cursoLower = cursoLower.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-
-    const niveles = {
-        inicial: ["inicial 1", "inicial 2a", "inicial 2b"],
-        preparatoria: ["primero a", "primero b", "primero c", "1ro a", "1ro b", "1ro c"],
-        elemental: ["segundo", "2do a", "2do b", "3ro a", "3ro b", "4to a", "4to b"],
-        media: ["5to a", "6to a", "7mo a", "Quinto a", "Sexto a", "Septimo a"],
-        superior: ["octavo a", "octavo b", "octavo c", "noveno a", "noveno b", "noveno c", "noveno d", "decimo a", "decimo b", "decimo c", "decimo d"],
+    // Niveles ordenados del más específico al más general
+    const nivelesOrdenados = {
         bachillerato: ["1ro ciencias", "1ro tecnico en contabilidad", "1ro tecnico en informatica",
                        "2do ciencias", "2do tecnico en contabilidad", "2do tecnico en informatica",
-                       "3ro ciencias", "3ro tecnico en contabilidad", "3ro tecnico en informatica"]
+                       "3ro ciencias", "3ro tecnico en contabilidad", "3ro tecnico en informatica"],
+        superior: ["octavo a", "octavo b", "octavo c", "8vo a", "8vo b", "8vo c",
+                   "noveno a", "noveno b", "noveno c", "noveno d", "9no a", "9no b", "9no c", "9no d",
+                   "decimo a", "decimo b", "decimo c", "decimo d", "10mo a", "10mo b", "10mo c", "10mo d"],
+        media: ["5to a", "6to a", "7mo a", "quinto a", "sexto a", "septimo a"],
+        elemental: ["segundo", "2do a", "2do b", "3ro a", "3ro b", "4to a", "4to b",
+                    "tercero a", "tercero b", "cuarto a", "cuarto b"],
+        preparatoria: ["primero a", "primero b", "primero c", "1ro a", "1ro b", "1ro c"],
+        inicial: ["inicial 1", "inicial 2a", "inicial 2b"]
     };
 
-    for (const [nivel, palabras] of Object.entries(niveles)) {
+    // Recorrer en el orden definido (importante: bachillerato primero)
+    for (const [nivel, palabras] of Object.entries(nivelesOrdenados)) {
         for (const palabra of palabras) {
             if (cursoLower.includes(palabra)) {
                 return nivel;
@@ -31,10 +34,14 @@ function detectarNivelPorCurso(curso) {
         }
     }
 
+    // Si no encontró coincidencia exacta, intentar por números
     const numeros = cursoLower.match(/\d+/);
     if (numeros) {
         const numero = parseInt(numeros[0]);
-        if (numero === 1) return "preparatoria";
+        // Excluir "ciencias" y "tecnico" del número 1
+        if (numero === 1 && !cursoLower.includes("ciencias") && !cursoLower.includes("tecnico")) {
+            return "preparatoria";
+        }
         if (numero >= 2 && numero <= 4) return "elemental";
         if (numero >= 5 && numero <= 7) return "media";
         if (numero >= 8 && numero <= 10) return "superior";
