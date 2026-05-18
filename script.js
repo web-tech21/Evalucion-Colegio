@@ -15,9 +15,9 @@ function detectarNivelPorCurso(curso) {
     const niveles = {
         inicial: ["inicial 1", "inicial 2a", "inicial 2b"],
         preparatoria: ["primero a", "primero b", "primero c", "1ro a", "1ro b", "1ro c"],
-        elemental: ["segundo a", "segundo b", "2do a", "2do b", "tercero a", "tercero b", "3ro a", "3ro b", "cuarto a", "cuarto b", "4to a", "4to b"],
+        elemental: ["segundo", "2do a", "2do b", "3ro a", "3ro b", "4to a", "4to b"],
         media: ["5to a", "6to a", "7mo a", "Quinto a", "Sexto a", "Septimo a"],
-        superior: ["octavo a", "8vo a", "octavo b", "8vo b", "octavo c", "8vo c", "noveno a", "9no a", "noveno b", "9no b", "noveno c", "9no c", "noveno d", "9no d", "decimo a", "10mo a",  "decimo b", "10mo b", "decimo c", "10mo c","decimo d", "10mo d"],
+        superior: ["octavo a", "octavo b", "octavo c", "noveno a", "noveno b", "noveno c", "noveno d", "decimo a", "decimo b", "decimo c", "decimo d"],
         bachillerato: ["1ro ciencias", "1ro tecnico en contabilidad", "1ro tecnico en informatica",
                        "2do ciencias", "2do tecnico en contabilidad", "2do tecnico en informatica",
                        "3ro ciencias", "3ro tecnico en contabilidad", "3ro tecnico en informatica"]
@@ -100,7 +100,7 @@ const preguntasPorNivel = {
         }
     },
     preparatoria: {
-        nombre: "Primero de EGB",
+        nombre: "Preparatoria",
         componentes: {
             "🧠 Habilidades": [
                 "1) ¿Cómo te llamas?",
@@ -265,49 +265,49 @@ const preguntasPorNivel = {
         nombre: "Bachillerato",
         componentes: {
             "🧠 Habilidades": [
-                "1) a) ¿Qué características propias te hacen único/a?",
-                "2) b) ¿Qué características propias crees que podrías mejorar?",
-                "3) c) ¿Qué cualidades propias te ayudarían a cumplir tus metas?",
-                "4) a) Cuando te encuentras ante un problema de difícil solución, ¿qué sueles hacer en primer lugar?",
-                "5) b) ¿Cómo evaluas la información antes de formar una opinión?",
-                "6) a) ¿Cómo abordas los desafíos que enfrentas en tu vida diaria?",
-                "7) b) ¿Cuáles son algunas estrategias que utilizas para resolver problemas?",
-                "8) c) ¿A quién o quiénes acudes para que te apoyen en la resolución de desafíos?",
-                "9) a) ¿Qué factores consideras antes de tomar una decisión importante?",
-                "10) a) ¿Cuáles son tus proyectos o metas a futuro?",
-                "11) b) ¿Hay algo que podría resultar una barrera o dificultad para cumplir lo que te propones?",
-                "12) a) ¿Qué estrategias utilizarías si tuvieras que realizar un proyecto y no cuentas con todos los materiales requeridos?",
-                "13) b) ¿Cómo harías para que algo que en un inicio pareciera no ser muy útil, se convierta en algo de valor?",
+                "1) ¿Qué características propias te hacen único/a?",
+                "2) ¿Qué características propias crees que podrías mejorar?",
+                "3) ¿Qué cualidades propias te ayudarían a cumplir tus metas?",
+                "4) Cuando te encuentras ante un problema de difícil solución, ¿qué sueles hacer en primer lugar?",
+                "5) ¿Cómo evaluas la información antes de formar una opinión?",
+                "6) ¿Cómo abordas los desafíos que enfrentas en tu vida diaria?",
+                "7) ¿Cuáles son algunas estrategias que utilizas para resolver problemas?",
+                "8) ¿A quién o quiénes acudes para que te apoyen en la resolución de desafíos?",
+                "9) ¿Qué factores consideras antes de tomar una decisión importante?",
+                "10) ¿Cuáles son tus proyectos o metas a futuro?",
+                "11) ¿Hay algo que podría resultar una barrera o dificultad para cumplir lo que te propones?",
+                "12) ¿Qué estrategias utilizarías si tuvieras que realizar un proyecto y no cuentas con todos los materiales requeridos?",
+                "13) ¿Cómo harías para que algo que en un inicio pareciera no ser muy útil, se convierta en algo de valor?",
                 "14) ¿Cómo trabajas en equipo para resolver desafíos de manera colaborativa?",
-                "15) a) ¿Cuál es tu compromiso con el bienestar de la sociedad?",
-                "16) b) ¿Qué acciones has realizado para contribuir a mejorar tu comunidad?",
-                "17) a) ¿Cuáles son tus principios éticos fundamentales?",
-                "18) b) ¿Cómo promueves la justicia y la equidad en tu entorno?",
-                "19) a) ¿Qué actitud tomas para establecer comunicación con personas cuya forma de pensar es muy distinta a la tuya?",
-                "20) b) ¿Qué harías si ves a un grupo de personas que excluyen a alguien de su grupo?",
-                "21) a) ¿Cómo crees que se pueden establecer relaciones positivas dentro de un grupo diverso de personas?",
-                "22) b) ¿Cómo crees que se podría fortalecer la participación de todos dentro de un trabajo en equipo?",
-                "23) a) ¿Cuál es la mejor manera de llegar a acuerdos frente a una situación que genera malestar entre dos o más personas?",
-                "24) b) ¿Qué haces para restablecer la comunicación luego de ocurrido un conflicto entre dos o más personas?",
-                "25) a) ¿Cómo te aseguras de comunicar tus ideas y opiniones de manera clara y respetuosa?",
-                "26) b) ¿Qué estrategia utilizarías para motivar a otras personas a hacer algo que les pides?",
-                "27) c) ¿Qué podrías hacer para eliminar posibles barreras en la comunicación con tu familia y amigos?",
-                "28) a) ¿Cuál consideras que es tu aporte en la resolución de situaciones de preocupación mundial como el calentamiento global o la contaminación ambiental?",
-                "29) b) ¿Cómo aportarías en la prevención de problemáticas del mundo actual?",
-                "30) a) ¿Qué consideras que se debe hacer cuando una persona no se siente bien emocionalmente?",
-                "31) b) ¿Qué estrategias utilizas para manejar tus emociones?",
-                "32) a) ¿Qué situaciones te causan estrés y qué haces para evitarlo?",
-                "33) b) ¿Qué haces para disminuir el nivel de estrés y sentirte mejor frente a una situación compleja?"
+                "15) ¿Cuál es tu compromiso con el bienestar de la sociedad?",
+                "16) ¿Qué acciones has realizado para contribuir a mejorar tu comunidad?",
+                "17) ¿Cuáles son tus principios éticos fundamentales?",
+                "18) ¿Cómo promueves la justicia y la equidad en tu entorno?",
+                "19) ¿Qué actitud tomas para establecer comunicación con personas cuya forma de pensar es muy distinta a la tuya?",
+                "20) ¿Qué harías si ves a un grupo de personas que excluyen a alguien de su grupo?",
+                "21) ¿Cómo crees que se pueden establecer relaciones positivas dentro de un grupo diverso de personas?",
+                "22) ¿Cómo crees que se podría fortalecer la participación de todos dentro de un trabajo en equipo?",
+                "23) ¿Cuál es la mejor manera de llegar a acuerdos frente a una situación que genera malestar entre dos o más personas?",
+                "24) ¿Qué haces para restablecer la comunicación luego de ocurrido un conflicto entre dos o más personas?",
+                "25) ¿Cómo te aseguras de comunicar tus ideas y opiniones de manera clara y respetuosa?",
+                "26) ¿Qué estrategia utilizarías para motivar a otras personas a hacer algo que les pides?",
+                "27) ¿Qué podrías hacer para eliminar posibles barreras en la comunicación con tu familia y amigos?",
+                "28) ¿Cuál consideras que es tu aporte en la resolución de situaciones de preocupación mundial como el calentamiento global o la contaminación ambiental?",
+                "29) ¿Cómo aportarías en la prevención de problemáticas del mundo actual?",
+                "30) ¿Qué consideras que se debe hacer cuando una persona no se siente bien emocionalmente?",
+                "31) ¿Qué estrategias utilizas para manejar tus emociones?",
+                "32) ¿Qué situaciones te causan estrés y qué haces para evitarlo?",
+                "33) ¿Qué haces para disminuir el nivel de estrés y sentirte mejor frente a una situación compleja?"
             ],
             "🏠 Entorno": [
-                "34) a) ¿Cómo influye tu entorno familiar en tu desarrollo personal?",
-                "35) b) ¿Cuáles son los valores que definen a tu familia?",
-                "36) a) ¿En qué situaciones te sientes presionado por tus compañeros y compañeras de clase?",
-                "37) b) ¿Qué situaciones consideras que son riesgosas en la institución educativa y por qué?"
+                "34) ¿Cómo influye tu entorno familiar en tu desarrollo personal?",
+                "35) ¿Cuáles son los valores que definen a tu familia?",
+                "36) ¿En qué situaciones te sientes presionado por tus compañeros y compañeras de clase?",
+                "37) ¿Qué situaciones consideras que son riesgosas en la institución educativa y por qué?"
             ],
             "😊 Estado Emocional": [
-                "38) a) ¿Cómo te sientes en general en este momento de tu vida?",
-                "39) b) ¿Hay algo en particular en este momento que te preocupe o te haga feliz?"
+                "38) ¿Cómo te sientes en general en este momento de tu vida?",
+                "39) ¿Hay algo en particular en este momento que te preocupe o te haga feliz?"
             ]
         }
     },
@@ -596,13 +596,13 @@ async function enviarEvaluacion() {
     const textoOriginal = boton.innerText;
 
     try {
-        boton.innerHTML = "📊 Guardando en Google Sheets... <span class='loading'></span>";
+        boton.innerHTML = "Enviando... <span class='loading'></span>";
         boton.disabled = true;
 
         const resultado = await guardarEnGoogleSheets();
 
         if (resultado) {
-            mostrarMensaje("✅ ¡Evaluación guardada exitosamente en Google Sheets!");
+            mostrarMensaje("✅ ¡Evaluación enviada exitosamente!");
 
             // Limpiar formulario después de guardar
             document.querySelectorAll(".respuesta-input").forEach(inp => inp.value = "");
