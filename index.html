@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Evaluación de Habilidades - U.E. Nueva Era</title>
-    <!-- SheetJS para generar archivos Excel -->
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,7 +15,7 @@
         <div class="header-bicolor-difuminado">
             <div class="logo-colegio">
                 <div class="logo-icono">
-                    <img src="/nuevo/img/image.png" alt="logocolegio" class="logo-icono">
+                    <img src="image.png" alt="logocolegio" class="logo-icono">
                 </div>
                 <div class="logo-texto">
                     <span class="logo-nombre">UNIDAD EDUCATIVA NUEVA ERA</span>
@@ -42,7 +40,7 @@
             <div class="datos-grid">
                 <div class="campo">
                     <label>👤 Nombre completo del estudiante *</label>
-                    <input type="text" id="nombreEstudiante" placeholder="Ej: Isabella Ramírez">
+                    <input type="text" id="nombreEstudiante" placeholder="Ej: Isabella Alejandra Lopez Ramírez">
                     <small class="campo-ayuda">Ingrese su nombre y apellido</small>
                 </div>
                 <div class="campo">
@@ -52,13 +50,13 @@
                 </div>
                 <div class="campo">
                     <label>📚 Curso / Grado *</label>
-                    <input type="text" id="curso" placeholder="Ej: 4to EGB, 7mo Básica, 1ro Bachillerato">
-                    <small class="campo-ayuda">Ejemplos: Inicial, 2do EGB, 5to Básica, 3ro Bachillerato</small>
+                    <input type="text" id="curso" placeholder="Ej: 4to a, septimo b, primero a">
+                    <small class="campo-ayuda">Ejemplos: Inicial 1, 2do a, 5to b, 3ro tecnico en contabilidad</small>
                 </div>
 
                 <div class="campo">
                     <label>📅 Fecha de evaluación *</label>
-                    <input type="date" id="fechaEvaluacion">
+                    <input type="date" id="fechaEvaluacion" disabled>
                     <small class="campo-ayuda">Fecha actual</small>
                 </div>
             </div>
@@ -84,14 +82,14 @@
 
             <div class="botones-accion">
                 <button id="regresarBtn" class="btn-regresar">🔙 Regresar</button>
-                <button id="enviarTodoBtn" class="btn-enviar-preguntas">📊 Enviar evaluación</button>
+                <button id="enviarTodoBtn" class="btn-enviar-preguntas">Enviar</button>
             </div>
         </div>
 
         <div id="mensajeInfo" class="mensaje"></div>
         <footer>
             <div class="footer-content">
-                <p>Unidad Educativa Particular Vinces Nueva Era - Comprometidos con la educación de calidad</p>
+                <p>Unidad Educativa Nueva Era - Comprometidos con la educación de calidad</p>
                 <p>© 2026 - Todos los derechos reservados</p>
             </div>
         </footer>
