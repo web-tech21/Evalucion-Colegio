@@ -124,7 +124,7 @@ const preguntasPorNivel = {
         }
     },
     preparatoria: {
-        nombre: "Preparatoria",
+        nombre: "Primero de EGB",
         componentes: {
             "🧠 Habilidades": [
                 "1) ¿Cómo te llamas?",
