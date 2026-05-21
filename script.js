@@ -1,75 +1,65 @@
+
+// ============================================
+// CONFIGURACIÓN DE EMAILJS
+// ============================================
+// 🔴 IMPORTANTE: Reemplazar con tus credenciales de EmailJS
+// 1. Crear cuenta en https://www.emailjs.com/
+// 2. Conectar servicio de correo (Gmail, Outlook, etc)
+// 3. Crear plantilla con variables: {{to_email}}, {{subject}}, {{message}}
+// 4. Obtener Public Key desde Account → API Keys
+
 // ============================================
 // CONFIGURACIÓN DE GOOGLE SHEETS
 // ============================================
 const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwxoWPDGWyULkNSZ0RTTRp-ZsSV8PlYCIQBU2NNrPdhI9Z6EAhmSNAZuJ57DXfdres/exec";
 
 // ============================================
-// DETECCIÓN DE NIVEL SEGÚN EL CURSO
+// DETECCIÓN DE NIVEL SEGÚN EL CURSO (VERSIÓN COMPLETA)
 // ============================================
-// CAMBIO 1: Reemplaza la función detectarNivelPorCurso completa
 function detectarNivelPorCurso(curso) {
-    let cursoLower = curso.toLowerCase().trim();
-    cursoLower = cursoLower.normalize("NFD")
-                           .replace(/[\u0300-\u036f]/g, "");
+    const cursoLower = curso.toLowerCase().trim();
 
-    // Bachillerato primero (más específico)
-    const bachilleratoPatterns = [
-        "ciencias", "tecnico en contabilidad",
-        "tecnico en informatica"
-    ];
-    // Si contiene "1ro", "2do" o "3ro" + algo de bachillerato
-    if (/\b[123](ro|do)\b/.test(cursoLower)) {
-        for (const pattern of bachilleratoPatterns) {
-            if (cursoLower.includes(pattern)) return "bachillerato";
-        }
+    // INICIAL
+    if (cursoLower === "inicial 1" || cursoLower === "inicial 2a" || cursoLower === "inicial 2b") {
+        return "inicial";
     }
 
-    const niveles = {
-        inicial:       ["inicial 1", "inicial 2a", "inicial 2b"],
-        preparatoria:  [
-            "primero a", "primero b", "primero c",
-            // claves más precisas — con letra al final
-            "1ro a", "1ro b", "1ro c",
-            "1ero a", "1ero b", "1ero c"
-        ],
-        elemental: ["segundo", "2do a", "2do b",
-                    "3ro a", "3ro b", "4to a", "4to b"],
-        media:     ["5to a", "6to a", "7mo a",
-                    "quinto a", "sexto a", "septimo a"],
-        superior:  ["octavo", "noveno", "decimo"],
-        bachillerato: [
-            "1ro ciencias", "1ro tecnico en contabilidad",
-            "1ro tecnico en informatica",
-            "2do ciencias", "2do tecnico en contabilidad",
-            "2do tecnico en informatica",
-            "3ro ciencias", "3ro tecnico en contabilidad",
-            "3ro tecnico en informatica"
-        ]
-    };
-
-    for (const [nivel, palabras] of Object.entries(niveles)) {
-        for (const palabra of palabras) {
-            if (cursoLower.includes(palabra)) return nivel;
-        }
+    // PREPARATORIA
+    if (cursoLower === "1ro a" || cursoLower === "1ro b" || cursoLower === "1ro c") {
+        return "preparatoria";
     }
 
-    // Fallback numérico — solo si no hubo match arriba
-    const numeros = cursoLower.match(/\d+/);
-    if (numeros) {
-        const n = parseInt(numeros[0]);
-        if (n === 1) return "preparatoria";
-        if (n >= 2 && n <= 4) return "elemental";
-        if (n >= 5 && n <= 7) return "media";
-        if (n >= 8 && n <= 10) return "superior";
+    // ELEMENTAL (2do, 3ro, 4to con letras)
+    if (cursoLower === "2do a" || cursoLower === "2do b" || cursoLower === "2do c" ||
+        cursoLower === "3ro a" || cursoLower === "3ro b" || cursoLower === "3ro c" ||
+        cursoLower === "4to a" || cursoLower === "4to b" || cursoLower === "4to c") {
+        return "elemental";
+    }
+
+    // MEDIA (5to, 6to, 7mo)
+    if (cursoLower === "5to a" || cursoLower === "6to a" || cursoLower === "7mo a") {
+        return "media";
+    }
+
+    // SUPERIOR (8vo, 9no, 10mo con letras)
+    if (cursoLower === "octavo a" || cursoLower === "octavo b" || cursoLower === "octavo c" ||
+        cursoLower === "noveno a" || cursoLower === "noveno b" || cursoLower === "noveno c" || cursoLower === "noveno d" ||
+        cursoLower === "decimo a" || cursoLower === "decimo b" || cursoLower === "decimo c" || cursoLower === "decimo d") {
+        return "superior";
+    }
+
+    // BACHILLERATO (Ciencias, Contabilidad, Informática)
+    if (cursoLower === "1ro ciencias" || cursoLower === "2do ciencias" || cursoLower === "3ro ciencias" ||
+        cursoLower === "1ro tecnico en contabilidad" || cursoLower === "2do tecnico en contabilidad" || cursoLower === "3ro tecnico en contabilidad" ||
+        cursoLower === "1ro tecnico en informatica" || cursoLower === "2do tecnico en informatica" || cursoLower === "3ro tecnico en informatica") {
+        return "bachillerato";
     }
 
     return null;
 }
 
+//================= BASE DE PREGUNTAS COMPLETA POR NIVEL=================
 
-// ============================================
-// BASE DE PREGUNTAS COMPLETA POR NIVEL
-// ============================================
 
 const preguntasPorNivel = {
     inicial: {
@@ -135,32 +125,32 @@ const preguntasPorNivel = {
                 "6) ¿Qué crees que sucede si todos los días llueve?",
                 "7) ¿Qué haces cuando no puedes alcanzar un juguete?",
                 "8) ¿Cómo intentarías volver a armar un juguete roto?",
-                "9) ¿Qué haces si los lápices para colorear no funcionan?",
+                "9) ¿Qué haces si los lápices no funcionan?",
                 "10) ¿Qué juego quieres jugar ahora? ¿Por qué?",
                 "11) ¿Qué comida prefieres para desayunar?",
                 "12) ¿Cuál es tu ropa favorita cuando hace frío?",
                 "13) ¿Qué otro uso le darías a una caja vacía?",
-                "14) ¿Qué figura podrías armar con bloques/rosetas?",
+                "14) ¿Qué figura podrías armar con bloques?",
                 "15) ¿Qué harías con una hoja de papel en blanco?",
                 "16) ¿Te gusta jugar con tus amigos/as? ¿Por qué?",
-                "17) ¿Respetas tu turno al jugar con tus amigos y amigas?",
+                "17) ¿Respetas tu turno al jugar?",
                 "18) ¿Sabes que hay personas que necesitan ayuda?",
-                "19) ¿Qué haces si un compañero no trajo nada para comer en el recreo?",
-                "20) ¿Por qué es importante compartir con los demás?",
+                "19) ¿Qué haces si un compañero no trajo nada para comer?",
+                "20) ¿Por qué es importante compartir?",
                 "21) ¿Crees que es importante seguir las reglas del juego?",
                 "22) ¿Si tus amigos no comprenden las reglas, las vuelves a explicar?",
                 "23) ¿Cómo te sientes cuando un amigo/a está llorando?",
-                "24) ¿Qué harías si ves a alguien necesita ayuda para llevar sus útiles escolares?",
+                "24) ¿Qué harías si alguien necesita ayuda con sus útiles?",
                 "25) ¿Con quién te gusta jugar más?",
                 "26) ¿Qué te gusta hacer con tus amigos/as?",
                 "27) ¿Te gusta hacer nuevos amigos?",
                 "28) ¿Qué haces cuando estás enojado con un amigo/a?",
-                "29) ¿Qué haces para reconciliarte con un amigo/a?",
+                "29) ¿Qué haces para reconciliarte?",
                 "30) ¿Cómo le dices a alguien lo que quieres?",
-                "31) ¿Cómo pides ayuda cuando lo necesitas?",
+                "31) ¿Cómo pides ayuda?",
                 "32) Cuando pides prestado un juguete ¿cómo lo haces?",
-                "33) ¿Sabes que hay niños/as en otros países? Puedes decirme algo que conozcas de las niñas y niños de otros países?",
-                "34) ¿Te gusta la ropa que utilizan niños y niñas de otras culturas?",
+                "33) ¿Sabes que hay niños/as en otros países? Cuéntame algo.",
+                "34) ¿Te gusta la ropa de otras culturas?",
                 "35) ¿Cómo te sientes cuando estás contento/a?",
                 "36) ¿Qué haces cuando te sientes enojado/a?",
                 "37) ¿Qué haces para relajarte cuando estás cansado/a?",
@@ -170,11 +160,11 @@ const preguntasPorNivel = {
                 "39) ¿Con qué familiar te gusta pasar más tiempo?",
                 "40) ¿En qué actividades compartes tiempo con tu familia?",
                 "41) ¿Quiénes son tus amigos?",
-                "42) En la escuela, ¿te agrada que te ayuden con las actividades escolares?"
+                "42) En la escuela, ¿te agrada que te ayuden con las tareas?"
             ],
             "😊 Estado Emocional": [
                 "43) ¿Cómo te sientes hoy? ¿Por qué?",
-                "44) ¿Hay algo que quieras contar sobre tu día (esta mañana, esta tarde)?"
+                "44) ¿Hay algo que quieras contar sobre tu día?"
             ]
         }
     },
@@ -185,11 +175,11 @@ const preguntasPorNivel = {
                 "1) ¿Cómo te sientes contigo mismo/a?",
                 "2) ¿Qué cosas te hacen feliz?",
                 "3) ¿Cuáles son tus habilidades favoritas?",
-                "4) ¿Qué crees que sucederá si sueltas un globo de los que se utilizan para las fiesta?",
+                "4) ¿Qué crees que sucederá si sueltas un globo de fiesta?",
                 "5) ¿Es posible que una persona sin protección salga al espacio?",
-                "6) ¿Qué crees que pasaría si todos los días llueve?",
-                "7) ¿Qué haces cuando pierdes un objeto que usas frecuentemente?",
-                "8) ¿Cómo armas un rompecabezas que sabes que le falta una pieza?",
+                "6) ¿Qué pasaría si llueve todos los días?",
+                "7) ¿Qué haces cuando pierdes un objeto que usas seguido?",
+                "8) ¿Cómo armas un rompecabezas con una pieza faltante?",
                 "9) ¿Qué haces si te levantaste tarde para ir a la escuela?",
                 "10) ¿Cómo eliges qué juego jugar?",
                 "11) ¿Qué consideras para elegir tu ropa?",
@@ -197,38 +187,39 @@ const preguntasPorNivel = {
                 "13) ¿Qué puedes hacer con una hoja de papel en blanco?",
                 "14) ¿Cómo inventarías un nuevo cuento?",
                 "15) ¿Podrías crear reglas para algún juego?",
-                "16) ¿Cómo compartes tus juguetes con tus amigos/as?",
-                "17) ¿Respetas las reglas en un juego?",
-                "18) ¿Sabes qué es lo que hacen las personas para ayudar a los demás?",
-                "19) ¿Por qué es importante cuidar el medio ambiente?",
-                "20) ¿Por qué piensas que es importante cuidar a los animales?",
-                "21) ¿Por qué es importante ser honesto/a?",
-                "22) ¿Por qué es importante ser justo/a?",
-                "23) ¿Por qué es importante ser respetuoso/a?",
-                "24) ¿Cómo te sientes cuando un amigo está triste?",
-                "25) ¿Qué harías para consolar a alguien que está llorando?",
-                "26) ¿Cómo te llevas con tus compañeros/as de clase?",
-                "27) ¿Cómo haces nuevos amigos/as?",
-                "28) ¿Qué haces cuando tienes una discusión con alguien?",
-                "29) ¿Cómo intentas resolver un conflicto con tus amigos/as?",
-                "30) ¿Cómo le explicas tus ideas a otras personas?",
-                "31) ¿Cómo pides ayuda cuando la necesitas?",
-                "32) ¿Sabes cómo se llaman otros países?",
-                "33) ¿Qué crees que es importante conocer sobre diferentes culturas?",
-                "34) ¿Qué haces cuando te enojas?",
-                "35) ¿Qué haces cuando te sientes triste?",
-                "36) ¿Qué haces cuando te sientes abrumado/a?",
-                "37) ¿Cuáles son tus técnicas para relajarte?"
+                "16) ¿Qué haces al trabajar en equipo?",
+                "17) ¿Cómo compartes tus juguetes con tus amigos?",
+                "18) ¿Respetas las reglas en un juego?",
+                "19) ¿Sabes cómo ayudar los demás?",
+                "20) ¿Por qué es importante cuidar el medio ambiente?",
+                "21) ¿Por qué cuidar a los animales?",
+                "22) ¿Por qué ser honesto/a?",
+                "23) ¿Por qué ser justos/as?",
+                "24) ¿Por qué ser respetuosos?",
+                "25) ¿Cómo te sientes cuando un amigo está triste?",
+                "26) ¿Qué harías para consolar a alguien que llora?",
+                "27) ¿Cómo te llevas con tus compañeros?",
+                "28) ¿Cómo haces nuevos amigos?",
+                "29) ¿Qué haces si tienes una discusión?",
+                "30) ¿Cómo resuelves un conflicto?",
+                "31) ¿Cómo explicas tus ideas?",
+                "32) ¿Cómo pides ayuda?",
+                "33) ¿Sabes nombres de otros países?",
+                "34) ¿Qué es importante conocer de otras culturas?",
+                "35) ¿Qué haces cuando te enojas?",
+                "36) ¿Qué haces cuando estás triste?",
+                "37) ¿Qué haces cuando te sientes abrumado?",
+                "38) ¿Cuáles son tus técnicas para relajarte?"
             ],
             "🏠 Entorno": [
-                "38) ¿Qué actividades te gusta realizar con las personas con las que vives?",
-                "39) ¿Cómo te sientes cuando estás en casa?",
-                "40) ¿Con qué compañero te gusta salir al recreo? ¿Por qué?",
-                "41) ¿Qué es lo que más te gusta de venir a la escuela?"
+                "39) ¿Qué actividades te gusta hacer con tu familia?",
+                "40) ¿Cómo te sientes en casa?",
+                "41) ¿Con qué compañero te gusta salir al recreo? ¿Por qué?",
+                "42) ¿Qué es lo que más te gusta de la escuela?"
             ],
             "😊 Estado Emocional": [
-                "42) ¿Cómo te sientes hoy?",
-                "43) ¿Hay algo que te genere vergüenza o culpa en este momento?"
+                "43) ¿Cómo te sientes hoy?",
+                "44) ¿Hay algo que te genere vergüenza o culpa en este momento?"
             ]
         }
     },
@@ -239,52 +230,55 @@ const preguntasPorNivel = {
                 "1) Si tuvieras algo lindo que decirte, ¿qué te dirías?",
                 "2) ¿Qué te gusta hacer?",
                 "3) ¿Cuáles crees que son tus defectos?",
-                "4) ¿Es posible que una persona pueda sumergirse a grandes profundidades del mar? ¿Por qué?",
-                "5) ¿Por qué crees que debes utilizar protección para protegerte del sol?",
-                "6) ¿Conoces algún superhéroe o superheroína?, ¿cuál es su poder? ¿Es posible el poder que tiene?",
-                "7) ¿Qué haces cuando tienes una tarea pendiente que olvidaste hacerla?",
-                "8) ¿Qué haces cuando al leer un texto, la información es confusa?",
-                "9) Si rompes un objeto de vidrio, ¿qué es lo primero que haces?",
-                "10) ¿Si te sientes agripado y te invitan a jugar al aire libre, ¿qué haces?",
-                "11) ¿Cómo asumes tu responsabilidad cuando has tomado una decisión que no fue la mejor?",
-                "12) Si vas a dibujar el fondo del mar ¿cuáles son los principales colores que utilizarías? ¿qué elemento dibujarías?",
-                "13) Además de colorear, ¿qué más se puede hacer con un lápiz de color?",
-                "14) ¿Qué haces para participar y aportar activamente en un trabajo o proyecto de equipo?",
-                "15) ¿Cuál es logro más destacado que recuerdas de alguna actividad que realizaste en un equipo? ¿Por qué?",
-                "16) ¿Qué haces cuando las ideas para una tarea que da otra persona, no son iguales a tus ideas?",
-                "17) ¿Qué actividades harías para un estudiante que viene de otro lugar, se sienta parte del grupo?",
-                "18) ¿Qué es la injusticia para ti?",
-                "19) Cuando alguien que conoces juzga a una persona, ¿qué haces?",
-                "20) Si tu mejor amigo, te cuenta un problema que le ha afectado mucho, ¿qué haces para ayudarle?",
-                "21) ¿Qué haces cuando ves llorando a alguien que conoces?",
-                "22) ¿Cómo te aseguras de escuchar las opiniones de tus compañeros y compañeras?",
-                "23) ¿Cuál es tu rol preferido cuando participas en una actividad en equipo? ¿Qué te gusta hacer y por qué?",
-                "24) ¿Elogias los logros de tus compañeros y compañeras? ¿Por qué?",
-                "25) ¿Cómo te sientes cuando alguien a quien aprecias está enojado contigo?",
-                "26) ¿Qué es para ti un desacuerdo entre dos o más personas?",
-                "27) ¿Qué haces en una situación en la que dos amigos o amigas están en un conflicto? (están peleando)",
-                "28) ¿Qué haces para asegurarte que te estás comunicando claramente con otras personas?",
-                "29) Cuando te piden que hagas una tarea determinada, ¿cómo te aseguras de que tienes claridad de lo que debes hacer?",
-                "30) ¿Qué haces cuando quieres comunicar una idea diferente a la que tus amigos y amigas piensan?",
-                "31) ¿Qué haces para ayudar a que la contaminación disminuya?",
-                "32) ¿Crees que es importante aprender sobre las personas que viven en otros países? ¿Por qué?",
-                "33) ¿Cómo describirías un mundo más justo?",
-                "34) ¿Qué te hace sentir muy triste y qué muy feliz?",
-                "35) ¿Qué haces cuando el tiempo que te dieron para hacer una tarea se agota y tú no terminas la tarea?",
-                "36) ¿Qué haces para relajarte si te sientes cansado?"
+                "4) ¿Puede alguien sumergirse a grandes profundidades? ¿Por qué?",
+                "5) ¿Por qué usar protección solar?",
+                "6) ¿Conoces algún superhéroe? ¿Su poder es posible?",
+                "7) ¿Qué haces si olvidaste una tarea?",
+                "8) ¿Qué haces si un texto es confuso?",
+                "9) Si rompes vidrio, ¿qué haces primero?",
+                "10) Si estás resfriado, ¿vas a jugar afuera?",
+                "11) ¿Cómo asumes responsabilidad tras mala decisión?",
+                "12) Para dibujar el mar, ¿qué colores usas?",
+                "13) ¿Qué más hacer con un lápiz de color?",
+                "14) ¿Cómo aportas en trabajo en equipo?",
+                "15) Logro destacado en equipo. ¿Por qué?",
+                "16) ¿Qué haces si otro tiene ideas diferentes?",
+                "17) ¿Cómo integrarías a un estudiante nuevo?",
+                "18) ¿Qué es injusticia para ti?",
+                "19) Si alguien juzga a otra persona, ¿qué haces?",
+                "Analiza consecuencias éticas de decisiones.",
+                "Ayuda a tu mejor amigo con problemas.",
+                "20) ¿Escuchas opiniones de compañeros?",
+                "21) Rol preferido en equipo. ¿Por qué?",
+                "22) ¿Elogias logros de otros?",
+                "23) ¿Cómo te sientes si alguien cercano se enoja contigo?",
+                "24) ¿Qué es un desacuerdo?",
+                "25) ¿Qué haces si dos amigos pelean?",
+                "26) ¿Cómo comunicarte claramente?",
+                "27) ¿Cómo asegurarte de entender una tarea?",
+                "28) ¿Cómo proponer idea diferente?",
+                "29) ¿Qué haces contra la contaminación?",
+                "30) ¿Importa conocer otros países?",
+                "31) Describe un mundo justo.",
+                "32) ¿Qué te hace muy feliz o muy triste?",
+                "33) ¿Qué haces si algo te enoja?",
+                "34) ¿Qué haces si se acaba el tiempo y no terminas tarea?",
+                "35) ¿Cómo te relajas si estás cansado?"
             ],
             "🏠 Entorno": [
-                "37) En casa, ¿con quién tienes mejor relación y con quién no?",
-                "38) ¿Qué situaciones te generan malestar en casa?",
-                "39) ¿Qué aspectos te gustan más de tu escuela? ¿cuáles los cambiarías?",
-                "40) ¿Cómo es el trato entre compañeros y compañeras de tu escuela?"
+                "36) En casa ¿con quién tienes mejor y peor relación?",
+                "37) ¿Qué situaciones te generan malestar en casa?",
+                "38) ¿Qué cambiarías de tu escuela?",
+                "39) ¿Cómo es el trato entre compañeros?"
             ],
             "😊 Estado Emocional": [
-                "41) ¿Cómo te sientes en este momento?",
-                "42) Generalmente, ¿cuál es la emoción más frecuente en ti? ¿Por qué crees que te sientes así?"
+                "40) ¿Cómo te sientes ahora?",
+                "41) ¿Cuál es la emoción más frecuente en ti? ¿Por qué?"
             ]
         }
     },
+
+    // ==================== BACHILLERATO ====================
     bachillerato: {
         nombre: "Bachillerato",
         componentes: {
@@ -293,7 +287,7 @@ const preguntasPorNivel = {
                 "2) ¿Qué características propias crees que podrías mejorar?",
                 "3) ¿Qué cualidades propias te ayudarían a cumplir tus metas?",
                 "4) Cuando te encuentras ante un problema de difícil solución, ¿qué sueles hacer en primer lugar?",
-                "5) ¿Cómo evaluas la información antes de formar una opinión?",
+                "5) ¿Cómo evalúas la información antes de formar una opinión?",
                 "6) ¿Cómo abordas los desafíos que enfrentas en tu vida diaria?",
                 "7) ¿Cuáles son algunas estrategias que utilizas para resolver problemas?",
                 "8) ¿A quién o quiénes acudes para que te apoyen en la resolución de desafíos?",
@@ -335,55 +329,54 @@ const preguntasPorNivel = {
             ]
         }
     },
-
     superior: {
         nombre: "Básica Superior",
         componentes: {
             "🧠 Habilidades": [
-                "1) ¿Quién eres? ¿Cómo te definirías en 3 palabras?",
-                "2) ¿Cuáles son tus características, Cualidades y defectos?",
-                "3) ¿Cómo te ves en 5 años? ¿Qué te gustaría estar haciendo?",
-                "4) ¿Qué harías para determinar una fuente confiable y diferenciar entre información falsa y verdadera?",
-                "5) Cuando te enfrentas a problemas complejos, ¿qué haces para resolverlos?",
-                "6) ¿Cómo diferencias un problema simple de uno complejo?",
-                "7) ¿De qué manera planteas soluciones a problemas cotidianos?",
-                "8) ¿Cómo sabes que la solución dada a un problema complejo dio resultados?",
-                "9) ¿Cuál sería tu reacción si un compañero o compañera te está presionando a hacer algo que consideras incorrecto?",
-                "10) Cuando debes tomar una decisión importante ¿cómo valoras los pros y los contras antes de elegir?",
-                "11) ¿Cómo te sientes cuando encuentras una solución nueva y creativa a un problema? ¿Por qué?",
-                "12) ¿Qué haces para estimular tu imaginación y creatividad en tus tiempos libres?",
-                "13) ¿Qué haces para participar y aportar activamente en un trabajo o proyecto de equipo?",
-                "14) ¿Cómo reaccionas cuando una o más personas con las que realizas trabajo en equipo, tienen ideas distintas?",
-                "15) ¿Qué temas sociales del Ecuador te preocupan más y por qué?",
-                "16) ¿Qué actitud tienes ante la diversidad de creencias y costumbres, distintas a las tuyas?",
-                "17) ¿Qué harías si te encontraras algo que no te pertenece y tienes la posibilidad de ubicar a su dueño o dueña?",
-                "18) ¿Qué actitud tomarías si observaras o sospecharas que otra persona esté realizando algún acto que pudiera afectar a alguien?",
-                "19) ¿Cómo te relacionas con personas que son de otros países y que tienen costumbres y lenguaje distinto?",
-                "20) ¿Qué haces para entender otras culturas y costumbres?",
-                "21) ¿Qué haces para ayudar a otras personas cuando enfrentan una situación difícil?",
-                "22) ¿Qué cualidades tuyas te permiten mantener una buena relación y comunicación con otras personas?",
-                "23) ¿Qué estrategias utilizas para comunicarte adecuadamente con otras personas cuyas ideas u opiniones son distintas a las tuyas?",
-                "24) ¿Cuál crees que pueda ser la mejor manera de resolver un conflicto en el que están involucradas varias personas con opiniones diferentes?",
-                "25) ¿Cuál crees que debería ser la actitud y posición de quien representa al grado cuando existen opiniones diferentes?",
-                "26) ¿Cuál suele ser tu reacción cuando el comportamiento de una persona te genera malestar?",
-                "27) ¿Qué sueles hacer para asegurarte de que te estás comunicando con otras personas de forma respetuosa y clara?",
-                "28) ¿Te interesa ver programas o documentales culturales de diferentes regiones y países?",
-                "29) ¿Qué características pueden diferenciar a personas entre un país y otro?",
-                "30) ¿Qué aspectos pueden conectar a personas de diferentes culturas y creencias?",
-                "31) ¿Consideras que la forma en que una persona expresa sus emociones puede llegar afectar a otras personas? ¿Por qué?",
-                "32) ¿Qué estrategias utilizas para manejar emociones como la tristeza o ansiedad?",
-                "33) ¿Qué haces para relajarte cuando enfrentas alguna situación complicada?",
-                "34) ¿Cómo organizas tu tiempo para cumplir con las tareas que te propones hacer en un día?"
+                "1) ¿Quién eres? Defínete en 3 palabras.",
+                "2) Cualidades y defectos.",
+                "3) ¿Cómo te ves en 5 años?",
+                "4) ¿Cómo identificar fuente confiable?",
+                "5) ¿Cómo resolver problemas complejos?",
+                "6) Diferencia entre problema simple y complejo.",
+                "7) ¿Cómo planteas soluciones cotidianas?",
+                "8) ¿Cómo saber si una solución funcionó?",
+                "9) Reacción ante presión a hacer algo incorrecto.",
+                "10) ¿Cómo valoras pros y contras en decisión importante?",
+                "11) ¿Cómo te sientes al encontrar solución creativa?",
+                "12) ¿Qué haces para estimular creatividad?",
+                "13) ¿Cómo participar activamente en equipo?",
+                "14) Reacción ante ideas distintas en equipo.",
+                "15) Temas sociales del Ecuador que te preocupan.",
+                "16) Actitud ante diversidad de creencias.",
+                "17) Si encuentras algo perdido, ¿qué haces?",
+                "18) Actitud si sospechas un acto que afecte a alguien.",
+                "19) ¿Cómo te relacionas con personas de otros países?",
+                "20) ¿Cómo entender otras culturas?",
+                "21) ¿Cómo ayudar a quien enfrenta situación difícil?",
+                "22) Cualidades para buena comunicación.",
+                "23) Estrategias ante opiniones distintas.",
+                "24) Mejor forma de resolver conflicto grupal.",
+                "25) Actitud de quien representa al grado.",
+                "26) Reacción cuando alguien te genera malestar.",
+                "27) ¿Cómo asegurar comunicación respetuosa?",
+                "28) ¿Ves documentales culturales?",
+                "29) Características que diferencian países.",
+                "30) Aspectos que conectan culturas.",
+                "31) ¿Cómo afectan las emociones a otros?",
+                "32) Estrategias para manejar tristeza o ansiedad.",
+                "33) ¿Qué haces para relajarte en situaciones complicadas?",
+                "34) ¿Cómo organizas tu tiempo diario?"
             ],
             "🏠 Entorno": [
-                "35) Cuando has tomado una decisión que no fue la mejor ¿Cómo te apoya tu familia?",
+                "35) ¿Cómo te apoya tu familia tras una mala decisión?",
                 "36) ¿Cómo influye tu familia en tu comportamiento?",
-                "37) Si tuvieras que cambiar algo de tu institución educativa, ¿qué cambiarías?",
-                "38) ¿Tus mejores amigos o amigas están en tu institución educativa?"
+                "37) ¿Qué cambiarías de tu institución?",
+                "38) ¿Tus mejores amigos están en el colegio?"
             ],
             "😊 Estado Emocional": [
                 "39) ¿Cómo te sientes en general en tu vida diaria?",
-                "40) ¿Cómo te sientes en este momento? ¿Por qué te sientes así?"
+                "40) ¿Cómo te sientes ahora? ¿Por qué?"
             ]
         }
     }
@@ -450,7 +443,7 @@ function validarRespuestasCompletas() {
     const hayVacias = resaltarPreguntasVacias();
     if (hayVacias) {
         const totalPreguntas = document.querySelectorAll(".pregunta-item").length;
-        const respondidas = document.querySelectorAll('.pregunta-item[style*="border-left: 5px solid #C62828"]').length;
+        const respondidas = document.querySelectorAll('.pregunta-item[style*="border-left: 5px solid #1565C0"]').length;
         const vacias = totalPreguntas - respondidas;
         mostrarMensaje(`❌ Faltan responder ${vacias} pregunta(s). Las preguntas sin responder están marcadas en rojo.`, true);
         const primerElementoVacio = document.querySelector('.pregunta-item[style*="border-left: 5px solid #e74c3c"]');
@@ -537,7 +530,6 @@ function iniciarEvaluacion() {
     const nivelDetectado = detectarNivelPorCurso(curso);
 
     if (!nivelDetectado) {
-        mostrarMensaje("⚠️ No se pudo detectar automáticamente el nivel. Por favor, revise el formato del curso (ej: 4to EGB, Inicial, Bachillerato)", true);
         return;
     }
 
@@ -550,15 +542,11 @@ function iniciarEvaluacion() {
 
     cargarFormularioPorNivel(nivelActual);
 
-    if (!fechaEvaluacion.value) {
-        fechaEvaluacion.value = new Date().toISOString().slice(0, 10);
-    }
-
     mostrarMensaje(`✅ Nivel detectado: ${preguntasPorNivel[nivelActual].nombre}. Complete todas las preguntas.`);
 }
 
 // ============================================
-// GUARDAR EN GOOGLE SHEETS - CORREGIDO
+// GUARDAR EN GOOGLE SHEETS
 // ============================================
 async function guardarEnGoogleSheets() {
     const respuestasArray = [];
@@ -589,29 +577,24 @@ async function guardarEnGoogleSheets() {
         timestamp: new Date().toISOString()
     };
 
-    console.log("📤 Enviando datos:", datos);
-
     try {
-        const response = await fetch(GOOGLE_SHEETS_URL, {
+        await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
             mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datos)
         });
-
         console.log("✅ Datos enviados a Google Sheets");
         return true;
-
     } catch (error) {
         console.error("❌ Error en Google Sheets:", error);
-        mostrarMensaje("❌ Error al guardar: " + error.message, true);
+        mostrarMensaje("❌ Error al guardar. Verifica tu conexión.", true);
         return false;
     }
 }
+
 // ============================================
-// ENVIAR EVALUACIÓN (SOLO GUARDAR EN GOOGLE SHEETS)
+// ENVIAR EVALUACIÓN (GUARDAR EN GOOGLE SHEETS)
 // ============================================
 async function enviarEvaluacion() {
     if (!validarRespuestasCompletas()) return;
@@ -628,17 +611,15 @@ async function enviarEvaluacion() {
         if (resultado) {
             mostrarMensaje("✅ ¡Evaluación enviada exitosamente!");
 
-            // Limpiar formulario después de guardar
             document.querySelectorAll(".respuesta-input").forEach(inp => inp.value = "");
             formularioDatos.style.display = "block";
             seccionPreguntas.style.display = "none";
             nombreEstudiante.value = "";
             cursoInputElem.value = "";
             docenteInputElem.value = "";
-            fechaEvaluacion.value = new Date().toISOString().slice(0, 10);
             nivelActual = "";
         } else {
-            mostrarMensaje("❌ Error al guardar en Google Sheets. Verifica tu conexión.", true);
+            mostrarMensaje("❌ Error al enviar, Verifica tu conexión.", true);
         }
 
     } catch (error) {
@@ -661,7 +642,6 @@ function regresarADatos() {
 
     seccionPreguntas.style.display = "none";
     formularioDatos.style.display = "block";
-    fechaEvaluacion.value = new Date().toISOString().slice(0, 10);
     nivelActual = "";
 
     mostrarMensaje("🔙 Has regresado al formulario de datos. Puedes modificar tu información y volver a comenzar.");
@@ -679,8 +659,22 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnEnviar) btnEnviar.addEventListener("click", enviarEvaluacion);
     if (btnRegresar) btnRegresar.addEventListener("click", regresarADatos);
 
-    fechaEvaluacion.value = new Date().toISOString().slice(0, 10);
+    // Fecha con zona horaria de Ecuador
+    function obtenerFechaEcuador() {
+        const ahora = new Date();
+        const opciones = {
+            timeZone: 'America/Guayaquil',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        };
+        return ahora.toLocaleDateString('en-CA', opciones);
+    }
 
-    console.log("✅ Aplicación cargada correctamente - Solo Google Sheets");
+    if (fechaEvaluacion) {
+        fechaEvaluacion.value = obtenerFechaEcuador();
+    }
+
+    console.log("✅ Aplicación cargada correctamente - Google Sheets");
     console.log("📚 Niveles disponibles:", Object.keys(preguntasPorNivel).join(", "));
 });
