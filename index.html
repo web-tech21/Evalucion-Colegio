@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Evaluación de Habilidades - U.E. Nueva Era</title>
     <!-- Estilos CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
@@ -50,8 +50,80 @@
                 </div>
                 <div class="campo">
                     <label>📚 Curso / Grado *</label>
-                    <input type="text" id="curso" placeholder="Ej: 7mo a, 1ro a, 2do ciencias">
-                    <small class="campo-ayuda">Ejemplos: Inicial 1, 2do a, 5to b, 3ro tecnico en contabilidad</small>
+                    <select id="curso" required>
+                        <option value="" disabled selected>-- Seleccione su curso --</option>
+
+                        <!-- ==================== INICIAL ==================== -->
+                        <optgroup label="🎨 EDUCACIÓN INICIAL">
+                            <option value="inicial 1">Inicial 1</option>
+                            <option value="inicial 2a">Inicial 2 A</option>
+                            <option value="inicial 2b">Inicial 2 B</option>
+                        </optgroup>
+
+                        <!-- ==================== PREPARATORIA ==================== -->
+                        <optgroup label="✏️ PREPARATORIA">
+                            <option value="1ro a">1ro A</option>
+                            <option value="1ro b">1ro B</option>
+                            <option value="1ro c">1ro C</option>
+                        </optgroup>
+
+                        <!-- ==================== BÁSICA ELEMENTAL ==================== -->
+                        <optgroup label="📘 BÁSICA ELEMENTAL">
+                            <option value="2do a">2do A</option>
+                            <option value="2do b">2do B</option>
+                            <option value="2do c">2do C</option>
+                            <option value="3ro a">3ro A</option>
+                            <option value="3ro b">3ro B</option>
+                            <option value="3ro c">3ro C</option>
+                            <option value="4to a">4to A</option>
+                            <option value="4to b">4to B</option>
+                            <option value="4to c">4to C</option>
+                        </optgroup>
+
+                        <!-- ==================== BÁSICA MEDIA ==================== -->
+                        <optgroup label="📖 BÁSICA MEDIA">
+                            <option value="5to a">5to A</option>
+                            <option value="6to a">6to A</option>
+                            <option value="7mo a">7mo A</option>
+                        </optgroup>
+
+                        <!-- ==================== BÁSICA SUPERIOR ==================== -->
+                        <optgroup label="🏆 BÁSICA SUPERIOR">
+                            <option value="octavo a">8vo A</option>
+                            <option value="octavo b">8vo B</option>
+                            <option value="octavo c">8vo C</option>
+                            <option value="noveno a">9no A</option>
+                            <option value="noveno b">9no B</option>
+                            <option value="noveno c">9no C</option>
+                            <option value="noveno d">9no D</option>
+                            <option value="decimo a">10mo A</option>
+                            <option value="decimo b">10mo B</option>
+                            <option value="decimo c">10mo C</option>
+                            <option value="decimo d">10mo D</option>
+                        </optgroup>
+
+                        <!-- ==================== BACHILLERATO - CIENCIAS ==================== -->
+                        <optgroup label="🔬 BACHILLERATO - CIENCIAS">
+                            <option value="1ro ciencias">1ro Ciencias</option>
+                            <option value="2do ciencias">2do Ciencias</option>
+                            <option value="3ro ciencias">3ro Ciencias</option>
+                        </optgroup>
+
+                        <!-- ==================== BACHILLERATO - CONTABILIDAD ==================== -->
+                        <optgroup label="📊 BACHILLERATO - CONTABILIDAD">
+                            <option value="1ro tecnico en contabilidad">1ro Técnico en Contabilidad</option>
+                            <option value="2do tecnico en contabilidad">2do Técnico en Contabilidad</option>
+                            <option value="3ro tecnico en contabilidad">3ro Técnico en Contabilidad</option>
+                        </optgroup>
+
+                        <!-- ==================== BACHILLERATO - INFORMÁTICA ==================== -->
+                        <optgroup label="💻 BACHILLERATO - INFORMÁTICA">
+                            <option value="1ro tecnico en informatica">1ro Técnico en Informática</option>
+                            <option value="2do tecnico en informatica">2do Técnico en Informática</option>
+                            <option value="3ro tecnico en informatica">3ro Técnico en Informática</option>
+                        </optgroup>
+                    </select>
+                    <small class="campo-ayuda">Seleccione su curso y paralelo de la lista</small>
                 </div>
 
                 <div class="campo">
@@ -96,7 +168,7 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="script.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>
