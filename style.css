@@ -157,8 +157,8 @@ select {
 }
 
 select:focus {
-    outline: none;
-    border-color: #C62828;
+   outline: none;
+    border-color: #1565C0;
     box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1);
 }
 
