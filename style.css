@@ -72,6 +72,8 @@ body {
     pointer-events: none;
 }
 
+
+
 /* Logo dentro del encabezado */
 .header-bicolor-difuminado .logo-colegio {
     display: flex;
@@ -141,6 +143,35 @@ body {
 .header-bicolor-difuminado .subtitulo {
     font-size: 0.9rem;
     opacity: 0.9;
+}
+
+/* Estilo para el select desplegable */
+select {
+    padding: 12px 16px;
+    border: 1.5px solid #e2eaf1;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    background: #fefefe;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+select:focus {
+    outline: none;
+    border-color: #C62828;
+    box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1);
+}
+
+optgroup {
+    font-weight: bold;
+    color: #1565C0;
+    background: #f8fafd;
+}
+
+option {
+    font-weight: normal;
+    color: #333;
+    padding: 8px;
 }
 
 /* ============================================
@@ -772,20 +803,23 @@ footer {
         padding: 5px 14px;
     }
 
-     .botones-accion {
-    display: flex;
-    justify-content: center;  /* Centra horizontalmente */
-    align-items: center;      /* Centra verticalmente */
-    /* gap: 20px;
+    .botones-accion {
+        display: flex;
+        justify-content: center;
+        /* Centra horizontalmente */
+        align-items: center;
+        /* Centra verticalmente */
+        /* gap: 20px;
     margin: 20px auto;        /* Centra el contenedor */
-    /* flex-wrap: wrap; */ */
+        /* flex-wrap: wrap; */
+        */
+    }
 
-}
-
-.btn-regresar, .btn-enviar-preguntas {
-    min-width: 100%;
-    text-align: center;
-}
+    .btn-regresar,
+    .btn-enviar-preguntas {
+        min-width: 100%;
+        text-align: center;
+    }
 }
 
 /* Laptops y pantallas medianas (769px - 1024px) */
@@ -801,11 +835,8 @@ footer {
         border-bottom: 2px solid rgba(255, 255, 255, 0.2);
     }
 
-   
-    
-    
-    ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| 
-    .datos-grid {
+
+  .datos-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
