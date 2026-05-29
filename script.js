@@ -42,22 +42,21 @@ function detectarNivelPorCurso(curso) {
     }
 
     // SUPERIOR (8vo, 9no, 10mo con letras)
-    if (cursoLower === "octavo a" || cursoLower === "octavo b" || cursoLower === "octavo c" ||
-        cursoLower === "noveno a" || cursoLower === "noveno b" || cursoLower === "noveno c" || cursoLower === "noveno d" ||
-        cursoLower === "decimo a" || cursoLower === "decimo b" || cursoLower === "decimo c" || cursoLower === "decimo d") {
+    if (cursoLower === "8vo a" || cursoLower === "8vo b" || cursoLower === "8vo c" ||
+        cursoLower === "9no a" || cursoLower === "9no b" || cursoLower === "9no c" || cursoLower === "9no d" ||
+        cursoLower === "10mo a" || cursoLower === "10mo b" || cursoLower === "10mo c" || cursoLower === "10mo d") {
         return "superior";
     }
 
     // BACHILLERATO (Ciencias, Contabilidad, Informática)
     if (cursoLower === "1ro ciencias" || cursoLower === "2do ciencias" || cursoLower === "3ro ciencias" ||
-        cursoLower === "1ro tecnico en contabilidad" || cursoLower === "2do tecnico en contabilidad" || cursoLower === "3ro tecnico en contabilidad" ||
-        cursoLower === "1ro tecnico en informatica" || cursoLower === "2do tecnico en informatica" || cursoLower === "3ro tecnico en informatica") {
+        cursoLower === "1ro técnico en contabilidad" || cursoLower === "2do técnico en contabilidad" || cursoLower === "3ro técnico en contabilidad" ||
+        cursoLower === "1ro técnico en informática" || cursoLower === "2do técnico en informática" || cursoLower === "3ro técnico en informática") {
         return "bachillerato";
     }
 
     return null;
 }
-
 //================= BASE DE PREGUNTAS COMPLETA POR NIVEL=================
 
 
